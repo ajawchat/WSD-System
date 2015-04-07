@@ -1,5 +1,6 @@
 import re, processor, os
 import writeFeatures as WRITE
+import processorTest
 
 
 if __name__ == "__main__":
@@ -9,9 +10,12 @@ if __name__ == "__main__":
     if not os.path.exists(path):
         os.makedirs(path)
 
-    
-    #document = "./DATA/EnglishLS.train"
-    document = "./DATA/EnglishLS.test"
+    document = ""	
+
+    if path == "trainingData":
+	document = "./DATA/EnglishLS.train"
+    else:
+	document = "./DATA/EnglishLS.test"
 
 
     fileOpen = open(document,"r")
@@ -36,17 +40,22 @@ if __name__ == "__main__":
         elif "</lexelt>" in line:
             blockData += line
             # Do some processing
-
-            wordData = processor.processDataBlock(blockData)    
-
+            
+	    if path == "trainingData":
+            	wordData = processor.processDataBlock(blockData)
+            else:
+		wordData = processorTest.processDataBlock(blockData)    
+             
             # Create a new file based on each word and add the feature set to it along with the class id - FOR TIMBL classifier only
             # Method signature => (pathname, data to be stored, fileName/ wordName)
+
+            if path == "trainingData":
+		WRITE.writeTimblFeatures(path, wordData, wordsList[-1])
+	    else:
+		WRITE.writeTimblFeaturesTest(path, wordData, wordsList[-1])
             
-            #WRITE.writeTimblFeatures(path, wordData, wordsList[-1])
-	    
-	    # Test data writing
-	    WRITE.writeTimblFeaturesTest(path, wordData, wordsList[-1])
-            
+            print wordsList
+               
             print "="*80
             #print blockData
             blockData = ""
