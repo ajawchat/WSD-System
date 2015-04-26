@@ -1,5 +1,4 @@
-import re
-
+import re, processor
 
 
 if __name__ == "__main__":
@@ -11,36 +10,29 @@ if __name__ == "__main__":
     # Initialize an empty list of words. We will add words as we parse the file
     wordsList = []
 
-    currWordNow = ""
-    wordData = ""
+    # Maintains the boundaries of a word
+    flag = False
 
-    # Loop through the file and gather the data for different words
-    for line in fileOpen.readlines():
-        #print line
-        currWord = ""
-
-        # append the data for a word in the same file and process it and save it as word.train & word.test
-        
-
-        currWordList = re.findall("<instance id=\"[\w]+.[a-z].[\w]+.[\d]+\"",line)
-        if len(currWordList) != 0:
-            #print currWordList[0].split('"')[1].split(".") 
-            currWord = currWordList[0].split('"')[1].split(".")
-            currWord = currWord[0] + "." + currWord[1]
-            print currWord
+    blockData = ""
     
-        
-        if currWord != currWordNow and currWord != "":
-            print wordData
-            wordData = ""
-            currWordNow = currWord
-            print "changed the global comparator to ",currWord
-            # create a new file for the currWord.train
-            fileWrite = open(currWord+".train","w")
-            
-        else:
-            if "lexelt" not in line:
-                wordData += line
+    for line in fileOpen.readlines():
+        if "<lexelt item=" in line:
+            blockData += line
 
-    print wordData
+            currWord = line.split('"')[1]
+            wordsList.append(currWord)
+            print wordsList
+
+            
+        elif "</lexelt>" in line:
+            blockData += line
+            # Do some processing
+
+            processor.processDataBlock(blockData)    
+
+            print "="*80
+            #print blockData
+            blockData = ""
+        else:
+            blockData += line
             
