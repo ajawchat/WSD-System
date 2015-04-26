@@ -1,6 +1,11 @@
 # Program to extract and arrange the required data from the XML and arrange it into a space delimited format
 
 import xml.etree.ElementTree as ET
+from xml.parsers import expat
+from bs4 import BeautifulSoup
+
+import PosTag
+
 
 #global hash tables to store the word counts and occurrences and the mapping of the ids to the numbers
 bag_of_words = {}
@@ -28,6 +33,7 @@ def extractFeatures(context):
     
     # Clean the context for getting the POS tags. It does not contain the $$head$$ string for processing
     posContext = context.replace("$$head$$","")
+    #PosTag.pos_tag(posContext)
     
     #--------------------------------------------------------------
     
@@ -107,8 +113,10 @@ def processDataBlock(dataBlock):
     
     print "Inside processDataBlock"
     
-
+    
     fileData = dataBlock
+
+    
     
     # replace all the <head> --> <<head>> and all the </head> tags to <<head>>
     fileData = fileData.replace("<head>","$$head$$").replace("</head>","$$head$$")
@@ -116,13 +124,23 @@ def processDataBlock(dataBlock):
     #print fileData
 
     xmlSlicedData = []
-    
-    ## Start XML processing now
-    root = ET.fromstring(fileData)
-    element = root.getiterator()
 
     
+
     
+    ## Start XML processing now
+    '''parser1 = ET.XMLParser(encoding="UTF-8")
+    print "test"
+    root = ET.fromstring(fileData) #, parser=parser1
+    print type(root),"========================"
+    element = root.getiterator()'''
+
+
+    soup = BeautifulSoup(fileData)
+    soup1 = str(soup)
+    root = ET.fromstring(soup1)
+    element = root.getiterator()
+
     for item in element:
         if item.tag == "instance":
             #print item.find('context').text
@@ -143,28 +161,17 @@ def processDataBlock(dataBlock):
                     xmlElem.append(sub.attrib["senseid"])
                 
                 elif sub.tag == "context":
-                    if sub.text.count("$$head$$") > 2:
-                        index1 = sub.text.index("$$head$$")
-                        index2 = sub.text.replace('$$head$$', 'XXX', 1).find('$$head$$')
-                        context = sub.text[0:index1-1] + sub.text[index1+8:index2] + sub.text[index2+8:]
-                        print context
-                        #xmlElem.append(extractFeatures(sub.text))
-                    else:
-                        print sub.text
-                        xmlElem.append(extractFeatures(sub.text))
+                    xmlElem.append(extractFeatures(sub.text))
                 
             xmlSlicedData.append(xmlElem)
 
     
-    print xmlSlicedData,"\n\n\n"
+    #print xmlSlicedData,"\n\n\n"
 
     return xmlSlicedData
     
-    # Extract the features
-    #print id_mapping
-    
-    #writeToNewFile(xmlSlicedData)
-    
+
+   
 
 
     

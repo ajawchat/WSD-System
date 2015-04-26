@@ -1,7 +1,5 @@
-import re, processor
+import re, processor, os
 import writeFeatures as WRITE
-
-
 
 
 if __name__ == "__main__":
@@ -13,7 +11,7 @@ if __name__ == "__main__":
 
 
 
-    document = "ajTrain.train"
+    document = "./DATA/EnglishLS.train"
 
     fileOpen = open(document,"r")
 
