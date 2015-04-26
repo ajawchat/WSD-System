@@ -11,26 +11,6 @@ cntr_id = 0
 
 ##===============================================
 
-def writeToNewFile(slicedData):
-    outputFile = open("arm.train","w")
-
-    print bag_of_words
-
-    for element in slicedData:
-        length = len(element)
-        print element
-        line = str(element[1])
-        for item in element[len(element)-1]:
-            line += " "+str(item)+":1"
-        
-        print line
-        outputFile.write(line)
-        outputFile.write("\n")
-
-    outputFile.close()
-
-##===============================================
-
 def removePunctuations(strList):
     # We keep the comma, as it provides pauses in the text
     punctuation = [".",")","(","","-","\n"]
@@ -65,8 +45,8 @@ def extractFeatures(context):
     newpart1 = removePunctuations(part1)
     newpart2 = removePunctuations(part2)
     
-    print newpart1
-    print newpart2
+    #print newpart1
+    #print newpart2
 
     # Append the terms as the features
 
@@ -112,7 +92,7 @@ def extractFeatures(context):
     else:
         result.append("")
 
-    print result 
+    #print result 
 
     return result
     
@@ -176,8 +156,10 @@ def processDataBlock(dataBlock):
             xmlSlicedData.append(xmlElem)
 
     
-    #print xmlSlicedData,"\n\n\n"
+    print xmlSlicedData,"\n\n\n"
 
+    return xmlSlicedData
+    
     # Extract the features
     #print id_mapping
     
