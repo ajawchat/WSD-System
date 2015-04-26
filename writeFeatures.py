@@ -6,16 +6,16 @@ def writeTimblFeatures(path, slicedData, currWord):
 
     #print currWord
 
-    outputFile = open(path+"\\"+currWord+".train","w")
+    outputFile = open(path+"/"+currWord+".train","w")
 
     for element in slicedData:
         length = len(element)
-        print element
+        #print element
         line = ""
         for item in element[len(element)-1]:
             line += str(item)+" "
         line += str(element[1])
-        print line
+        #print line
         outputFile.write(line)
         outputFile.write("\n")
 
