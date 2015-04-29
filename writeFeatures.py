@@ -4,7 +4,7 @@ import os
 # Function to write feature set for TIMBL classifier for each word in a different .train and .test file
 def writeTimblFeatures(path, slicedData, currWord):
 
-    #print currWord
+    print "saving file for ",currWord
 
     outputFile = open(path+"/"+currWord+".train","w")
 
@@ -20,7 +20,26 @@ def writeTimblFeatures(path, slicedData, currWord):
         outputFile.write("\n")
 
     outputFile.close()
+##===============================================
+# Function to write feature set for TIMBL classifier for each word in a different .train and .test file
+def writeTimblFeaturesTest(path, slicedData, currWord):
 
+    #print currWord
+
+    outputFile = open(path+"/"+currWord+".test","w")
+
+    for element in slicedData:
+        length = len(element)
+        #print element
+        line = ""
+        for item in element[len(element)-1]:
+            line += str(item)+" "
+        #line += str(element[1])
+        #print line
+        outputFile.write(line)
+        outputFile.write("\n")
+
+    outputFile.close()
 ##===============================================
 
 

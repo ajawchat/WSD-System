@@ -82,19 +82,19 @@ def extractFeatures(context):
 
     #This appends the 1st word after the target word
     if len2 > 1:
-        result.append(newpart1[0])
+        result.append(newpart2[0])
     else:
         result.append("")
     
     #This appends the 1st word after the target word
     if len2 > 2:
-        result.append(newpart1[1])
+        result.append(newpart2[1])
     else:
         result.append("")
 
     #This appends the 1st word after the target word
     if len2 > 3:
-        result.append(newpart1[2])
+        result.append(newpart2[2])
     else:
         result.append("")
 

@@ -5,13 +5,14 @@ import writeFeatures as WRITE
 if __name__ == "__main__":
 
     # Check if the folder exists or not, if not then create it. Initializing it before running the program as it is necessary
-    path = "trainingData"
+    path = "testData"
     if not os.path.exists(path):
         os.makedirs(path)
 
+    
+    #document = "./DATA/EnglishLS.train"
+    document = "./DATA/EnglishLS.test"
 
-
-    document = "./DATA/EnglishLS.train"
 
     fileOpen = open(document,"r")
 
@@ -40,7 +41,11 @@ if __name__ == "__main__":
 
             # Create a new file based on each word and add the feature set to it along with the class id - FOR TIMBL classifier only
             # Method signature => (pathname, data to be stored, fileName/ wordName)
-            WRITE.writeTimblFeatures(path, wordData, wordsList[-1])
+            
+            #WRITE.writeTimblFeatures(path, wordData, wordsList[-1])
+	    
+	    # Test data writing
+	    WRITE.writeTimblFeaturesTest(path, wordData, wordsList[-1])
             
             print "="*80
             #print blockData
