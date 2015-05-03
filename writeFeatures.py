@@ -24,18 +24,21 @@ def writeTimblFeatures(path, slicedData, currWord):
 # Function to write feature set for TIMBL classifier for each word in a different .train and .test file
 def writeTimblFeaturesTest(path, slicedData, currWord):
 
-    #print currWord
+    print currWord
 
     outputFile = open(path+"/"+currWord+".test","w")
 
+    print slicedData
+    
     for element in slicedData:
+        print element,"===>"
         length = len(element)
         #print element
         line = ""
-        for item in element[len(element)-1]:
+        for item in element[-2]:
             line += str(item)+" "
-        #line += str(element[1])
-        #print line
+        line += str(element[-1])
+        print line,"-"
         outputFile.write(line)
         outputFile.write("\n")
 
@@ -54,8 +57,10 @@ def writeSVMFeatures(slicedData, currWord):
         length = len(element)
         print element
         line = str(element[1])
-        for item in element[len(element)-1]:
+        for item in element[len(element)-2]:
             line += " "+str(item)+":1"
+
+        line += element[len(element)-1]
         
         print line
         outputFile.write(line)
