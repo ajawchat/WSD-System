@@ -13,6 +13,67 @@ cntr_words = 0
 id_mapping = {}
 cntr_id = 0
 
+##===============================================
+
+def getTerms(newpart1, newpart2):
+    result = []
+	
+    len1 = len(newpart1)
+    len2 = len(newpart2)
+
+    #This appends the 3rd word before the target word
+    if len1 > 3:
+        result.append(newpart1[-3])
+    else:
+        result.append("*")
+
+    #This appends the 2nd word before the target word
+    if len1 > 2:
+        result.append(newpart1[-2])
+    else:
+        result.append("*")
+
+    #This appends the 1st word before the target word
+    if len1 > 1:
+        result.append(newpart1[-1])
+    else:
+        result.append("*")
+    
+
+    #This appends the 1st word after the target word
+    if len2 > 1:
+        result.append(newpart2[0])
+    else:
+        result.append("END")
+    
+    #This appends the 1st word after the target word
+    if len2 > 2:
+        result.append(newpart2[1])
+    else:
+        result.append("END")
+
+    #This appends the 1st word after the target word
+    if len2 > 3:
+        result.append(newpart2[2])
+    else:
+        result.append("END")
+	
+    #return result+getNGrams(result)
+    return result
+##===============================================
+
+def getNGrams(terms):
+	# terms is a list, we just create n-grams from them = > [-1,-2,-3,1,2,3]
+ 	
+ 	result = []
+	
+	for i in range(0,len(terms)-1):	
+		result.append(",".join([terms[i],terms[i+1]]))
+
+	return result
+
+
+
 
 ##===============================================
 
@@ -32,9 +93,10 @@ def extractFeatures(context):
     #--------------------------------------------------------------
     
     # Clean the context for getting the POS tags. It does not contain the $$head$$ string for processing
-    posContext = context.replace("$$head$$","")
+    #posContext = context.replace("$$head$$","")
     #PosTag.pos_tag(posContext)
     
+
     #--------------------------------------------------------------
     
 
@@ -56,50 +118,9 @@ def extractFeatures(context):
 
     # Append the terms as the features
 
-    result = []
+    result = getTerms(newpart1, newpart2)
 
-    len1 = len(newpart1)
-    len2 = len(newpart2)
-
-    #This appends the 3rd word before the target word
-    if len1 > 3:
-        result.append(newpart1[-3])
-    else:
-        result.append("")
-
-    #This appends the 2nd word before the target word
-    if len1 > 2:
-        result.append(newpart1[-2])
-    else:
-        result.append("")
-
-    #This appends the 1st word before the target word
-    if len1 > 1:
-        result.append(newpart1[-1])
-    else:
-        result.append("")
     
-
-    #This appends the 1st word after the target word
-    if len2 > 1:
-        result.append(newpart2[0])
-    else:
-        result.append("")
-    
-    #This appends the 1st word after the target word
-    if len2 > 2:
-        result.append(newpart2[1])
-    else:
-        result.append("")
-
-    #This appends the 1st word after the target word
-    if len2 > 3:
-        result.append(newpart2[2])
-    else:
-        result.append("")
-
-    #print result 
-
     return result
     
     
