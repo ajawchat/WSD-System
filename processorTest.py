@@ -59,8 +59,8 @@ def getTerms(newpart1, newpart2):
     else:
         result.append("END")
 	
-    #return result+getNGrams(result)
-    return result
+    return result+getNGrams(result)
+    
 
 ##===============================================
 
@@ -88,7 +88,7 @@ def removePunctuations(strList):
 ##===============================================
 
 
-def extractFeatures(context):
+def extractFeatures(context, currWord):
     global bag_of_words, cntr_words, id_mapping, cntr_id
 
     
@@ -116,9 +116,14 @@ def extractFeatures(context):
     #print newpart1
     #print newpart2
 
+    # Get the POS and append to the feature list
+    currWord = currWord.split(".")[0]
+    posTags = PosTag.getPOS(newpart1, newpart2, currWord)
+    postags = posTags #+ getNGrams(posTags)
+
     # Append the terms as the features
 
-    result = getTerms(newpart1, newpart2)
+    result = getTerms(newpart1, newpart2) + postags
 
     return result
 
@@ -143,7 +148,7 @@ def createkeyPickle():
 ##===============================================
 
 
-def processDataBlock(dataBlock):
+def processDataBlock(dataBlock, currWord):
 
     global bag_of_words, cntr_words, id_mapping, cntr_id
     
@@ -196,7 +201,7 @@ def processDataBlock(dataBlock):
                     xmlElem.append(sub.attrib["senseid"])
                 
                 elif sub.tag == "context":
-                    xmlElem.append(extractFeatures(sub.text))
+                    xmlElem.append(extractFeatures(sub.text, currWord))
                     print xmlElem
 
             # Append the senses at the end. If a word has multiple senses, make many copies of it

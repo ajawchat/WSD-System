@@ -38,7 +38,7 @@ def writeTimblFeaturesTest(path, slicedData, currWord):
         for item in element[-2]:
             line += str(item)+" "
         line += str(element[-1])
-        print line,"-"
+        #print line,"-"
         outputFile.write(line)
         outputFile.write("\n")
 

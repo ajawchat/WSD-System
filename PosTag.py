@@ -1,4 +1,4 @@
-import nltk
+import nltk,re
 
 # WSD Project ML_IN_CL
 
@@ -48,17 +48,68 @@ WRB         wh-abverb '''
 
 def pos_tag(var):
     #var = raw_input("Please enter input string ");
-    #print "String entered: ", var;
+    
     if(var != ""):  
         token = nltk.word_tokenize(var)
     else:
         print "Empty string entered. "
         return;
 
-    #print "Tokenized data: ", token
-
+    
     tagged = nltk.pos_tag(token)
+    
     #print "POS tagged: ", tagged
+    return tagged
+
+
+#================================================
+
+def getPOS(preList, postList, currWord):
+    newList = preList + [currWord] + postList
+    totalLen = len(newList)
+    str = " ".join(newList)
+    tagged = pos_tag(str)
+    
+    featureSet = []
+    if len(preList) > 3:
+    	featureSet.append(tagged[len(preList)-3][1])
+    else:
+        featureSet.append("*")
+
+    if len(preList) > 2:
+	featureSet.append(tagged[len(preList)-2][1])
+    else:
+        featureSet.append("*")
+
+    if len(preList) > 1:
+	featureSet.append(tagged[len(preList)-1][1])
+    else:
+        featureSet.append("*")
+
+    
+    if len(postList) > 0:
+	featureSet.append(tagged[len(preList)+1][1])
+    else:
+        featureSet.append("*")
+
+    if len(postList) > 1:
+	featureSet.append(tagged[len(preList)+2][1])
+    else:
+        featureSet.append("*")
+
+    if len(postList) > 2:
+	featureSet.append(tagged[len(preList)+3][1])
+    else:
+        featureSet.append("*")
+
+    
+    return featureSet
+    
+
+    
+#================================================
+
 
 if __name__ == "__main__":
-    pos_tag("THIS IS A TEST STRING");
+    pos_tag("Extensity  ( for example the size of a patch of light )  usually correlates with the number and spatial distribution of receptors activated .  Finally ,  duration is correlated with the period of time for which the relevant neurones are active .  ( I am leaving aside phenomena such as accommodation , whereby a constant stimulus when sustained may <head>activate</head> the nervous system progressively less intensively , with a corresponding reduction in the perceived intensity of the stimulus . These ,  and other features of adaptation ,  do not invalidate the underlying conceptual framework .  )  The earliest psychophysical observations demonstrated a correlation between the intensity of the physical stimulus and  subjective reports of the intensity of the resultant experience .");
+    

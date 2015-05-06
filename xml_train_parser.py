@@ -42,9 +42,9 @@ if __name__ == "__main__":
             # Do some processing
             
 	    if path == "trainingData":
-            	wordData = processor.processDataBlock(blockData)
+            	wordData = processor.processDataBlock(blockData, wordsList[-1])
             else:
-		wordData = processorTest.processDataBlock(blockData)    
+		wordData = processorTest.processDataBlock(blockData, wordsList[-1])    
              
             # Create a new file based on each word and add the feature set to it along with the class id - FOR TIMBL classifier only
             # Method signature => (pathname, data to be stored, fileName/ wordName)

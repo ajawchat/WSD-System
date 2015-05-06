@@ -58,8 +58,8 @@ def getTerms(newpart1, newpart2):
     else:
         result.append("END")
 	
-    #return result+getNGrams(result)
-    return result
+    return result+getNGrams(result)
+    
 ##===============================================
 
 def getNGrams(terms):
@@ -71,8 +71,6 @@ def getNGrams(terms):
 		result.append(",".join([terms[i],terms[i+1]]))
 
 	return result
-
-
 
 
 ##===============================================
@@ -87,14 +85,14 @@ def removePunctuations(strList):
 ##===============================================
 
 
-def extractFeatures(context):
+def extractFeatures(context, currWord):
     global bag_of_words, cntr_words, id_mapping, cntr_id
 
     #--------------------------------------------------------------
     
     # Clean the context for getting the POS tags. It does not contain the $$head$$ string for processing
     #posContext = context.replace("$$head$$","")
-    #PosTag.pos_tag(posContext)
+    #PosTag.pos_tag(context)
     
 
     #--------------------------------------------------------------
@@ -115,10 +113,17 @@ def extractFeatures(context):
     
     #print newpart1
     #print newpart2
-
+    
+    # Get the POS and append to the feature list
+    currWord = currWord.split(".")[0]
+    posTags = PosTag.getPOS(newpart1, newpart2, currWord)
+    postags = posTags #+ getNGrams(posTags)
+        
+    #print postags
+    
     # Append the terms as the features
 
-    result = getTerms(newpart1, newpart2)
+    result = getTerms(newpart1, newpart2) + postags 
 
     
     return result
@@ -128,7 +133,7 @@ def extractFeatures(context):
 ##===============================================
 
 
-def processDataBlock(dataBlock):
+def processDataBlock(dataBlock, currWord):
 
     global bag_of_words, cntr_words, id_mapping, cntr_id
     
@@ -146,7 +151,7 @@ def processDataBlock(dataBlock):
 
     xmlSlicedData = []
 
-    
+   
 
     
     ## Start XML processing now
@@ -182,7 +187,7 @@ def processDataBlock(dataBlock):
                     xmlElem.append(sub.attrib["senseid"])
                 
                 elif sub.tag == "context":
-                    xmlElem.append(extractFeatures(sub.text))
+                    xmlElem.append(extractFeatures(sub.text, currWord))
                 
             xmlSlicedData.append(xmlElem)
 
